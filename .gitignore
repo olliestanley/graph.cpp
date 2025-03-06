@@ -1,0 +1,61 @@
+# Build artifacts
+/build/
+/bin/
+/lib/
+/out/
+/obj/
+/CMakeFiles/
+/CMakeCache.txt
+/*.o
+/*.a
+/*.so
+/*.exe
+/*.dll
+/*.dylib
+/*.pdb
+/*.ilk
+/*.idb
+
+# CMake-generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.code-workspace
+*.suo
+*.ncb
+*.vcxproj*
+*.sln
+*.user
+*.orig
+
+# Compilation database
+/compile_commands.json
+
+# Logs and debugging files
+*.log
+*.dmp
+*.stackdump
+*.strace
+
+# Package managers
+/vcpkg_installed/
+/conanbuildinfo.txt
+/conan.lock
+
+# Python virtual environments (if using scripts)
+venv/
+__pycache__/
+*.pyc
+
+# Miscellaneous
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+*.bak
