@@ -15,13 +15,18 @@
 /*.pdb
 /*.ilk
 /*.idb
+/*.tcl
 
 # CMake-generated files
 CMakeFiles/
 CMakeCache.txt
-cmake_install.cmake
+*.cmake
 Makefile
 compile_commands.json
+_deps/*
+
+# Test artifacts
+Testing/Temporary/
 
 # IDEs and Editors
 .vscode/
