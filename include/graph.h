@@ -20,13 +20,13 @@ public:
 
     std::map<std::string, std::string> graphAttributes;
 
-private:
     NodeAttrMap _node;
     AdjList _adj;
 
 public:
     Graph();
     Graph(const AttrDict &attr);
+    virtual ~Graph() = default;
 
     std::string getName() const;
     void setName(const std::string &name);
@@ -42,26 +42,30 @@ public:
     int order() const;
     bool has_node(const Node &node) const;
 
-    void add_edge(const Node &u, const Node &v, const EdgeAttrMap &attr = {});
+    virtual void add_edge(const Node &u, const Node &v, const EdgeAttrMap &attr = {});
     void add_edges_from(const std::vector<std::pair<Node, Node>> &edges, const EdgeAttrMap &attr = {});
     void add_edges_from(const std::vector<std::tuple<Node, Node, EdgeAttrMap>> &edges);
-    void remove_edge(const Node &u, const Node &v);
+    virtual void remove_edge(const Node &u, const Node &v);
     void remove_edges_from(const std::vector<std::pair<Node, Node>> &edges);
-    bool has_edge(const Node &u, const Node &v) const;
+    virtual bool has_edge(const Node &u, const Node &v) const;
 
     std::vector<Node> neighbors(const Node &node) const;
 
-    double size(const std::string &weight = "") const;
     int number_of_edges() const;
     std::map<Node, int> degree() const;
 
+    virtual double size(const std::string &weight = "") const;
+
     void clear();
     void clear_edges();
-    bool is_multigraph() const;
-    bool is_directed() const;
-    Graph copy() const;
-    Graph to_directed(bool as_view = false) const;
-    Graph to_undirected(bool as_view = false) const;
+
+    virtual bool is_multigraph() const;
+    virtual bool is_directed() const;
+
+    virtual Graph copy() const;
+    virtual Graph to_directed(bool as_view = false) const;
+    virtual Graph to_undirected(bool as_view = false) const;
+
     Graph subgraph(const std::vector<Node> &nodes) const;
     Graph edge_subgraph(const std::vector<std::pair<Node, Node>> &edges) const;
 };
