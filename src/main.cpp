@@ -1,6 +1,29 @@
 #include <iostream>
 #include "graph.h"
 #include "digraph.h"
+#include "algorithms/bfs.h"
+
+void run_bfs() {
+    Graph G;
+    for (int i = 0; i < 6; i++)
+        G.add_node(i);
+
+    G.add_edge(0, 1, {});
+    G.add_edge(0, 2, {});
+    G.add_edge(1, 3, {});
+    G.add_edge(1, 4, {});
+    G.add_edge(2, 5, {});
+
+    try {
+        std::vector<Graph::Node> order = bfs(G, 0);
+        std::cout << "BFS order starting from node 0: ";
+        for (auto node : order)
+            std::cout << node << " ";
+        std::cout << std::endl;
+    } catch (const std::exception &e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+}
 
 int main() {
     Graph G;
@@ -19,5 +42,7 @@ int main() {
     std::cout << DG << std::endl;
     Graph DG_G = DG.to_undirected();
     std::cout << DG_G << std::endl;
+
+    run_bfs();
     return 0;
 }
