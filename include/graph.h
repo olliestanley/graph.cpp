@@ -20,6 +20,7 @@ public:
 
     std::map<std::string, std::string> graphAttributes;
 
+    // TODO: make these private and find better solution for accessing them
     NodeAttrMap _node;
     AdjList _adj;
 

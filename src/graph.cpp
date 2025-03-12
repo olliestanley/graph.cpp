@@ -8,6 +8,7 @@
 #include <tuple>
 #include <cstdlib>
 #include "graph.h"
+#include "digraph.h"
 
 using namespace std;
 
@@ -211,19 +212,16 @@ Graph Graph::copy() const {
 }
 
 Graph Graph::to_directed(bool as_view) const {
-    Graph G;
-    G.graphAttributes = graphAttributes;
-    G.graphAttributes["directed"] = "true";
-    G._node = _node;
+    DiGraph D(graphAttributes);
+    for (const auto &nodePair : _node) {
+        D.add_node(nodePair.first, nodePair.second);
+    }
     for (const auto &u_pair : _adj) {
-        Node u = u_pair.first;
         for (const auto &v_pair : u_pair.second) {
-            Node v = v_pair.first;
-            if (G._adj[u].find(v) == G._adj[u].end())
-                G._adj[u][v] = v_pair.second;
+            D.add_edge(u_pair.first, v_pair.first, v_pair.second);
         }
     }
-    return G;
+    return D;
 }
 
 Graph Graph::to_undirected(bool as_view) const {
