@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include "graph.h"
 #include "algorithms/bfs.h"
+#include "utils/generator.h"
 
 using namespace std;
 
