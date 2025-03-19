@@ -14,8 +14,8 @@
 To set the compiler (for instance, if your system default G++ version does not support C++20), you can set environment variables:
 
 ```bash
-$ export CXX=g++-11
-$ export CC=gcc-11
+export CXX=g++-11
+export CC=gcc-11
 ```
 
 ### Run tests

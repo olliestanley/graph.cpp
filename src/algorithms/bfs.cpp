@@ -35,3 +35,28 @@ vector<Graph::Node> bfs(const Graph &G, const Graph::Node &start) {
     }
     return visitOrder;
 }
+
+Generator<Graph::Node> bfs_generator(const Graph &G, const Graph::Node &start) {
+    if (!G.has_node(start))
+        throw runtime_error("The start node is not in the graph.");
+
+    set<Graph::Node> visited;
+    queue<Graph::Node> q;
+
+    visited.insert(start);
+    q.push(start);
+
+    while (!q.empty()) {
+        Graph::Node current = q.front();
+        q.pop();
+        co_yield current;
+
+        vector<Graph::Node> nbrs = G.neighbors(current);
+        for (const auto &nbr : nbrs) {
+            if (visited.find(nbr) == visited.end()) {
+                visited.insert(nbr);
+                q.push(nbr);
+            }
+        }
+    }
+}

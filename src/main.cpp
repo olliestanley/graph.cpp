@@ -23,6 +23,11 @@ void run_bfs() {
     } catch (const std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
+
+    std::cout << "BFS order starting from node 1: ";
+    for (auto node : bfs_generator(G, 1)) {
+        std::cout << node << " ";
+    }
 }
 
 int main() {
