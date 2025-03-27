@@ -1,4 +1,6 @@
 #include "graph.h"
+#include "algorithms/bfs.h"
+#include "utils/generator.h"
 #include <gtest/gtest.h>
 
 TEST(GraphTest, AddNode) {
@@ -33,4 +35,17 @@ TEST(GraphTest, GraphName) {
     EXPECT_EQ(g.getName(), "MyGraph");
     std::string expectedStr = "Graph named 'MyGraph' with 0 nodes and 0 edges";
     EXPECT_EQ(g.str(), expectedStr);
+}
+
+TEST(GraphTest, BFSOrder) {
+    Graph g;
+    g.add_edge(1, 2);
+    g.add_edge(1, 3);
+    g.add_edge(2, 4);
+    g.add_edge(2, 5);
+    g.add_edge(3, 6);
+    g.add_edge(3, 7);
+    std::vector<Graph::Node> order = bfs(g, 1);
+    std::vector<Graph::Node> expectedOrder = {1, 2, 3, 4, 5, 6, 7};
+    EXPECT_EQ(order, expectedOrder);
 }
