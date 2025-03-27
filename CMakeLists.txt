@@ -27,3 +27,6 @@ target_link_libraries(test_graph graph_lib gtest_main)
 include(CTest)
 enable_testing()
 add_test(NAME GraphTests COMMAND test_graph)
+
+add_executable(graph_main app/main.cpp)
+target_link_libraries(graph_main graph_lib)
