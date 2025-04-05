@@ -38,3 +38,30 @@ vector<Graph::Node> dfs(const Graph &G, const Graph::Node &start) {
 
     return visitOrder;
 }
+
+Generator<Graph::Node> dfs_generator(const Graph &G, const Graph::Node &start) {
+    if (!G.has_node(start))
+        throw runtime_error("The start node is not in the graph.");
+
+    set<Graph::Node> visited;
+    stack<Graph::Node> s;
+    s.push(start);
+
+    while (!s.empty()) {
+        Graph::Node current = s.top();
+        s.pop();
+
+        if (visited.find(current) != visited.end())
+            continue;
+
+        visited.insert(current);
+        co_yield current;
+
+        vector<Graph::Node> nbrs = G.neighbors(current);
+        for (auto it = nbrs.rbegin(); it != nbrs.rend(); ++it) {
+            if (visited.find(*it) == visited.end()) {
+                s.push(*it);
+            }
+        }
+    }
+}
