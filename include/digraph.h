@@ -5,8 +5,9 @@
 
 class DiGraph : public Graph {
 public:
-    DiGraph() : Graph() {}
-    DiGraph(const AttrDict &attr) : Graph(attr) {}
+    DiGraph();
+    DiGraph(const AttrDict &attr);
+
     virtual ~DiGraph() {};
 
     void add_edge(const Node &u, const Node &v, const EdgeAttrMap &attr = {}) override;
@@ -18,8 +19,8 @@ public:
     bool is_directed() const override;
     bool is_multigraph() const override;
 
-    Graph copy() const override;
-    Graph to_directed(bool as_view = false) const override;
+    DiGraph copy();
+    DiGraph to_directed(bool as_view = false);
     Graph to_undirected(bool as_view = false) const override;
 };
 

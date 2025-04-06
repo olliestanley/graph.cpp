@@ -1,6 +1,9 @@
+#include "digraph.h"
+
 using namespace std;
 
-#include "digraph.h"
+DiGraph::DiGraph() : Graph() {}
+DiGraph::DiGraph(const AttrDict &attr) : Graph(attr) {}
 
 void DiGraph::add_edge(const Node &u, const Node &v, const EdgeAttrMap &attr) {
     if (!has_node(u)) add_node(u);
@@ -46,15 +49,14 @@ bool DiGraph::is_multigraph() const {
     return false;
 }
 
-Graph DiGraph::copy() const {
-    Graph G;
-    G.graphAttributes = graphAttributes;
+DiGraph DiGraph::copy() {
+    DiGraph G(graphAttributes);
     G._node = _node;
     G._adj = _adj;
     return G;
 }
 
-Graph DiGraph::to_directed(bool as_view) const {
+DiGraph DiGraph::to_directed(bool as_view) {
     return copy();
 }
 
