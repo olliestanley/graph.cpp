@@ -19,7 +19,7 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-file(GLOB_RECURSE TEST_FILES tests/*.cpp)
+file(GLOB_RECURSE TEST_FILES tests/*.cpp tests/*/*.cpp)
 
 add_executable(test_graph ${TEST_FILES})
 target_link_libraries(test_graph graph_lib gtest_main)
