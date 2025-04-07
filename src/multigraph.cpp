@@ -1,4 +1,5 @@
 #include "multigraph.h"
+#include "multidigraph.h"
 #include <stdexcept>
 #include <sstream>
 #include <algorithm>
@@ -97,5 +98,53 @@ MultiGraph MultiGraph::copy() {
     MultiGraph G(graphAttributes);
     G._node = _node;
     G._multi_adj = _multi_adj;
+    return G;
+}
+
+void MultiGraph::clear_edges() {
+    for (auto &pair : _multi_adj)
+        pair.second.clear();
+}
+
+std::vector<Graph::Node> MultiGraph::neighbors(const Node &node) const {
+    auto it = _multi_adj.find(node);
+    if (it == _multi_adj.end())
+        throw runtime_error("The node " + to_string(node) + " is not in the graph.");
+    vector<Node> nbrs;
+    for (const auto &pair : it->second)
+        nbrs.push_back(pair.first);
+    return nbrs;
+}
+
+std::map<Graph::Node, int> MultiGraph::degree() const {
+    map<Node, int> deg;
+    for (const auto &u_pair : _multi_adj) {
+        Node u = u_pair.first;
+        int count = 0;
+        for (const auto &v_pair : u_pair.second)
+            count += v_pair.second.size();
+        deg[u] = count;
+    }
+    return deg;
+}
+
+MultiDiGraph MultiGraph::to_directed(bool as_view) {
+    MultiDiGraph G(graphAttributes);
+    G._node = _node;
+    std::set<std::tuple<Node, Node, int>> seen;
+    for (const auto &u_pair : _multi_adj) {
+        Node u = u_pair.first;
+        for (const auto &v_pair : u_pair.second) {
+            Node v = v_pair.first;
+            for (const auto &key_pair : v_pair.second) {
+                int key = key_pair.first;
+                if (u <= v && seen.emplace(u, v, key).second) {
+                    G.add_edge(u, v, key_pair.second);
+                    if (u != v)
+                        G.add_edge(v, u, key_pair.second);
+                }
+            }
+        }
+    }
     return G;
 }

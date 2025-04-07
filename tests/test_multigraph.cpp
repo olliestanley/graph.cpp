@@ -60,3 +60,45 @@ TEST(MultiGraphTest, IsMultigraph) {
     MultiGraph g;
     EXPECT_TRUE(g.is_multigraph());
 }
+
+TEST(MultiGraphTest, NeighborsAreCorrect) {
+    MultiGraph g;
+    g.add_edge(1, 2);
+    g.add_edge(1, 3);
+    g.add_edge(1, 2);
+
+    auto nbrs = g.neighbors(1);
+    std::set<int> nbr_set(nbrs.begin(), nbrs.end());
+
+    EXPECT_EQ(nbr_set.size(), 2);
+    EXPECT_TRUE(nbr_set.count(2));
+    EXPECT_TRUE(nbr_set.count(3));
+}
+
+TEST(MultiGraphTest, DegreeCountsMultiEdges) {
+    MultiGraph g;
+    g.add_edge(1, 2);
+    g.add_edge(1, 2);
+    g.add_edge(1, 3);
+
+    auto deg = g.degree();
+
+    EXPECT_EQ(deg[1], 3);  // Two to 2, one to 3
+    EXPECT_EQ(deg[2], 2);  // Two from 1
+    EXPECT_EQ(deg[3], 1);  // One from 1
+}
+
+TEST(MultiGraphTest, ClearEdgesRemovesAllButPreservesNodes) {
+    MultiGraph g;
+    g.add_node(1, {{"color", "red"}});
+    g.add_node(2);
+    g.add_edge(1, 2);
+    g.add_edge(1, 2);
+
+    g.clear_edges();
+
+    EXPECT_EQ(static_cast<int>(g.size()), 0);
+    EXPECT_TRUE(g.has_node(1));
+    EXPECT_EQ(g._node.at(1).at("color"), "red");
+    EXPECT_TRUE(g.has_node(2));
+}
