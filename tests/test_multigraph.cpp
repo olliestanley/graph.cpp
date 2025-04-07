@@ -1,4 +1,5 @@
 #include "multigraph.h"
+#include "multidigraph.h"
 #include <gtest/gtest.h>
 
 TEST(MultiGraphTest, AddMultipleEdges) {
@@ -101,4 +102,23 @@ TEST(MultiGraphTest, ClearEdgesRemovesAllButPreservesNodes) {
     EXPECT_TRUE(g.has_node(1));
     EXPECT_EQ(g._node.at(1).at("color"), "red");
     EXPECT_TRUE(g.has_node(2));
+}
+
+TEST(MultiGraphTest, ToDirectedCreatesSymmetricMultiDiGraph) {
+    MultiGraph g;
+    g.add_edge(1, 2, {{"w", "x"}});
+    g.add_edge(1, 2, {{"w", "y"}});
+
+    MultiDiGraph directed = g.to_directed();
+    EXPECT_TRUE(directed.is_directed());
+    EXPECT_TRUE(directed.is_multigraph());
+
+    int count12 = 0, count21 = 0;
+    for (const auto& [u, v, k] : directed.edges()) {
+        if (u == 1 && v == 2) count12++;
+        if (u == 2 && v == 1) count21++;
+    }
+
+    EXPECT_EQ(count12, 2);
+    EXPECT_EQ(count21, 2);
 }
