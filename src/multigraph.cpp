@@ -54,6 +54,28 @@ bool MultiGraph::has_edge(const Node &u, const Node &v, int key) const {
     return it2->second.find(key) != it2->second.end();
 }
 
+void MultiGraph::remove_edges_from(const vector<tuple<Node, Node, int>> &edges) {
+    for (const auto &[u, v, key] : edges) {
+        if (has_edge(u, v, key)) {
+            remove_edge(u, v, key);
+        }
+    }
+}
+
+void MultiGraph::remove_edges_from(const vector<pair<Node, Node>> &edges) {
+    for (const auto &[u, v] : edges) {
+        if (_multi_adj.count(u) && _multi_adj[u].count(v)) {
+            vector<int> keys;
+            for (const auto &kv : _multi_adj[u][v]) {
+                keys.push_back(kv.first);
+            }
+            for (int key : keys) {
+                remove_edge(u, v, key);
+            }
+        }
+    }
+}
+
 vector<tuple<Graph::Node, Graph::Node, int>> MultiGraph::edges() const {
     set<tuple<Node, Node, int>> edge_set;
     for (const auto &u_pair : _multi_adj) {
@@ -147,4 +169,49 @@ MultiDiGraph MultiGraph::to_directed(bool as_view) {
         }
     }
     return G;
+}
+
+MultiGraph MultiGraph::to_undirected(bool as_view) {
+    return copy();
+}
+
+MultiGraph MultiGraph::subgraph(const vector<Graph::Node> &nodes) const {
+    MultiGraph subG;
+    set<Node> nodeSet(nodes.begin(), nodes.end());
+    for (const auto &p : _node) {
+        if (nodeSet.count(p.first))
+            subG.add_node(p.first, p.second);
+    }
+    for (const auto &u_pair : _multi_adj) {
+        Node u = u_pair.first;
+        if (!nodeSet.count(u)) continue;
+        for (const auto &v_pair : u_pair.second) {
+            Node v = v_pair.first;
+            if (!nodeSet.count(v)) continue;
+            for (const auto &key_attr : v_pair.second) {
+                int key = key_attr.first;
+                subG.add_node(u, _node.at(u));
+                subG.add_node(v, _node.at(v));
+                subG._multi_adj[u][v][key] = key_attr.second;
+                if (u != v)
+                    subG._multi_adj[v][u][key] = key_attr.second;
+            }
+        }
+    }
+    return subG;
+}
+
+MultiGraph MultiGraph::edge_subgraph(const vector<tuple<Graph::Node, Graph::Node, int>> &edges) const {
+    MultiGraph subG;
+    for (const auto &[u, v, key] : edges) {
+        if (has_edge(u, v, key)) {
+            subG.add_node(u, _node.at(u));
+            subG.add_node(v, _node.at(v));
+            const auto &edata = _multi_adj.at(u).at(v).at(key);
+            subG._multi_adj[u][v][key] = edata;
+            if (u != v)
+                subG._multi_adj[v][u][key] = edata;
+        }
+    }
+    return subG;
 }

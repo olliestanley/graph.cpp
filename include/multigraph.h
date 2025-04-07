@@ -23,7 +23,10 @@ public:
     bool has_edge(const Node &u, const Node &v, int key) const;
     bool has_edge(const Node &u, const Node &v) const override;
     std::vector<std::tuple<Node, Node, int>> edges() const;
+
     void clear_edges();
+    void remove_edges_from(const vector<tuple<Node, Node, int>> &edges);
+    void remove_edges_from(const vector<pair<Node, Node>> &edges);
 
     std::vector<Node> neighbors(const Node &node) const;
     std::map<Node, int> degree() const;
@@ -33,6 +36,10 @@ public:
 
     MultiGraph copy();
     MultiDiGraph to_directed(bool as_view = false);
+    MultiGraph to_undirected(bool as_view);
+
+    MultiGraph subgraph(const vector<Graph::Node> &nodes) const;
+    MultiGraph edge_subgraph(const vector<tuple<Graph::Node, Graph::Node, int>> &edges) const;
 };
 
 #endif
