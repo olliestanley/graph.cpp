@@ -25,8 +25,8 @@ public:
     std::vector<std::tuple<Node, Node, int>> edges() const;
 
     void clear_edges();
-    void remove_edges_from(const vector<tuple<Node, Node, int>> &edges);
-    void remove_edges_from(const vector<pair<Node, Node>> &edges);
+    void remove_edges_from(const std::vector<std::tuple<Node, Node, int>> &edges);
+    void remove_edges_from(const std::vector<std::pair<Node, Node>> &edges);
 
     std::vector<Node> neighbors(const Node &node) const;
     std::map<Node, int> degree() const;
@@ -38,8 +38,8 @@ public:
     MultiDiGraph to_directed(bool as_view = false);
     MultiGraph to_undirected(bool as_view);
 
-    MultiGraph subgraph(const vector<Graph::Node> &nodes) const;
-    MultiGraph edge_subgraph(const vector<tuple<Graph::Node, Graph::Node, int>> &edges) const;
+    MultiGraph subgraph(const std::vector<Graph::Node> &nodes) const;
+    MultiGraph edge_subgraph(const std::vector<std::tuple<Graph::Node, Graph::Node, int>> &edges) const;
 };
 
 #endif
