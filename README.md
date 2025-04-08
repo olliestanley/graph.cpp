@@ -24,3 +24,10 @@ First, follow the build process.
 
 1. cd build
 2. ./test_graph
+
+### Run demo app
+
+First, follow the build process.
+
+1. cd build
+2. ./graph_main
